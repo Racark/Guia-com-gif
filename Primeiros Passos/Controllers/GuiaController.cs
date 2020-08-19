@@ -50,18 +50,7 @@ namespace Primeiros_Passos.Controllers
                 {
                     if (guia.ImagemUpload != null)
                     {
-                        //Pega o nome da imagem/ e sua extensão
-                        var imagemNome = String.Format("{0}", guia.GuiaId);
-                        var extensao = System.IO.Path.GetExtension(guia.ImagemUpload.FileName).ToLower();
-
-                        //Recebe lê a imagem
-                        using (var img = Image.FromStream(guia.ImagemUpload.InputStream))
-                        {
-                            //Da a referencia da imagem
-                            guia.Imagem = String.Format("/Imagens/{0}{1}", imagemNome, extensao);
-                            // Salva imagem na pasta 
-                            img.Save(Server.MapPath(guia.Imagem));
-                        }
+                        guia.Imagem = SalvarPasta(guia);
 
                     }
                     db.GuiaDb.AddOrUpdate(guia);
@@ -75,28 +64,16 @@ namespace Primeiros_Passos.Controllers
 
                     else
                     {
+                        guia.Imagem = "img";
+                        db.GuiaDb.Add(guia);
 
-                        busca = db.GuiaDb.Add(guia);
+                        db.SaveChanges();
 
                         if (guia.ImagemUpload != null)
                         {
-                            //Pega o nome da imagem/ e sua extensão
-                            var imagemNome = String.Format("{0}", busca.GuiaId);
-                            var extensao = System.IO.Path.GetExtension(guia.ImagemUpload.FileName).ToLower();
-
-                            //Recebe lê a imagem
-                            using (var img = Image.FromStream(guia.ImagemUpload.InputStream))
-                            {
-                                //Da a referencia da imagem
-                                guia.Imagem = String.Format("/Imagens/{0}{1}", imagemNome, extensao);
-                                // Salva imagem na pasta 
-                                img.Save(Server.MapPath(guia.Imagem));
-                            }
+                            guia.Imagem = SalvarPasta(guia);
+                            db.GuiaDb.AddOrUpdate(guia);
                         }
-
-                        busca.Imagem = guia.Imagem;
-
-                        db.GuiaDb.AddOrUpdate(busca);
                         
                     }
                 }
@@ -104,6 +81,23 @@ namespace Primeiros_Passos.Controllers
 
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public string SalvarPasta (Guia guia)
+        {
+            var imagemNome = String.Format("{0}", guia.GuiaId);
+            var extensao = System.IO.Path.GetExtension(guia.ImagemUpload.FileName).ToLower();
+
+            //Recebe lê a imagem
+            using (var img = Image.FromStream(guia.ImagemUpload.InputStream))
+            {
+                //Da a referencia da imagem
+                guia.Imagem = String.Format("/Imagens/{0}{1}", imagemNome, extensao);
+                // Salva imagem na pasta 
+                img.Save(Server.MapPath(guia.Imagem));
+            }
+
+            return guia.Imagem;
         }
 
         public ActionResult Up(int id)
