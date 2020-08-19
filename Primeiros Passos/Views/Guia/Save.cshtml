@@ -1,0 +1,68 @@
+﻿@model Primeiros_Passos.Models.Guia
+
+@{
+    ViewBag.Title = "Save";
+}
+
+<h2>Save</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div clanss="form-horizontal">
+        <h2>Nova Pergunta</h2>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.GuiaId)
+        @Html.HiddenFor(mode => mode.Pos)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Titulo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.descrição, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.descrição, 10, 40, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.descrição, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImagemUpload, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.ImagemUpload, new { type = "file", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ImagemUpload, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Premium, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.Premium)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <select name="Language">
+                    <option value="pt" @(Model.Language == "pt" ? "selected" : "")>Português</option>
+                    <option value="es" @(Model.Language == "es" ? "selected" : "")>Español</option>
+                    <option value="en" @(Model.Language == "en" ? "selected" : "")>English</option>
+                    <option value="it" @(Model.Language == "it" ? "selected" : "")>Italiano</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" formenctype="multipart/form-data" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

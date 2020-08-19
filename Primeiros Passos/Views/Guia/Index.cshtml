@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Primeiros_Passos.Models.Guia>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<select id="language" onchange="doNavigate()">
+    <option value="">Languages</option>
+    <option value="@Url.Action("Index", "Guia", new { lan = "pt" })">Português</option>
+    <option value="@Url.Action("Index", "Guia", new { lan = "es" })">Español</option>
+    <option value="@Url.Action("Index", "Guia", new { lan = "en" })">English</option>
+    <option value="@Url.Action("Index", "Guia", new { lan = "it" })">Italiano</option>
+</select>
+
+
+<h3>
+    <a class="btn btn-warning" href="@Url.Action("Save", "Guia")">Adicionar Guia</a>
+</h3>
+
+
+@foreach (var item in Model.OrderBy(pos => pos.Pos))
+{
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+        <div class="panel panel-default round">
+
+            <div class="panel-heading" role="tab">
+                <h4 class="panel-title link " role="button" data-parent="#accordion" aria-expanded="false">
+                    @Html.DisplayFor(modelItem => item.Titulo, new { htmlAttributes = new { @class = "form-control" } })
+                </h4>
+
+                <a class="btn btn-info" href="@Url.Action("Save", "Guia", new { id = item.GuiaId })">Editar</a>
+                <a class="btn btn-success" href="@Url.Action("UP", "Guia", new { id = item.GuiaId })"> UP </a>
+                <a class="btn btn-primary" href="@Url.Action("DOWN", "Guia", new { id = item.GuiaId })"> DOWN </a>
+                <a class="btn btn-danger" href="@Url.Action("Delete", "Guia", new { id = item.GuiaId })"> Delete</a>
+
+            </div>
+
+            <div class="panel-body" role="tabpanel" aria-expanded="false">
+                <div>
+                    @Html.DisplayFor(modelItem => item.descrição, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div>
+                    <a class="btn btn-default" href="@item.Imagem">Video</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    function doNavigate() {
+        window.location.href = document.getElementById("language").value;
+    }
+
+    window.onload = function () {
+        Gifffer();
+
+    }   
+</script>
+<script type="text/javascript" src="~/Scripts/gifffer.js"></script>
+
